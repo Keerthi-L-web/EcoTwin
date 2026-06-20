@@ -21,7 +21,9 @@ const Card = memo(function Card({ className, hover, glow, children, ...props }: 
       {children}
     </div>
   );
-}
+});
+
+export default Card;
 
 export function CardHeader({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
