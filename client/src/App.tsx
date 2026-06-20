@@ -18,6 +18,7 @@ const AIEnginePage = lazy(() => import('./features/ai-engine/pages/AIEnginePage'
 const CoachPage = lazy(() => import('./features/coach/pages/CoachPage'));
 const ForecastPage = lazy(() => import('./features/forecast/pages/ForecastPage'));
 const ChallengesPage = lazy(() => import('./features/challenges/pages/ChallengesPage'));
+const GoalsPage = lazy(() => import('./features/goals/pages/GoalsPage'));
 const LeaderboardPage = lazy(() => import('./features/gamification/pages/LeaderboardPage'));
 const ReportsPage = lazy(() => import('./features/reports/pages/ReportsPage'));
 const NotificationsPage = lazy(() => import('./features/notifications/pages/NotificationsPage'));
@@ -86,6 +87,7 @@ export default function App() {
               <Route path="coach" element={<Suspense fallback={<LoadingFallback />}><CoachPage /></Suspense>} />
               <Route path="forecast" element={<Suspense fallback={<LoadingFallback />}><ForecastPage /></Suspense>} />
               <Route path="challenges" element={<Suspense fallback={<LoadingFallback />}><ChallengesPage /></Suspense>} />
+              <Route path="goals" element={<Suspense fallback={<LoadingFallback />}><GoalsPage /></Suspense>} />
               <Route path="leaderboard" element={<Suspense fallback={<LoadingFallback />}><LeaderboardPage /></Suspense>} />
               <Route path="reports" element={<Suspense fallback={<LoadingFallback />}><ReportsPage /></Suspense>} />
               <Route path="notifications" element={<Suspense fallback={<LoadingFallback />}><NotificationsPage /></Suspense>} />

@@ -17,6 +17,7 @@ import challengesRoutes from './features/challenges/challenges.routes';
 import gamificationRoutes from './features/gamification/gamification.routes';
 import notificationsRoutes from './features/notifications/notifications.routes';
 import reportsRoutes from './features/reports/reports.routes';
+import goalsRoutes from './features/goals/goals.routes';
 
 const app = express();
 
@@ -67,6 +68,7 @@ app.use('/api/challenges', challengesRoutes);
 app.use('/api/gamification', gamificationRoutes);
 app.use('/api/notifications', notificationsRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/goals', goalsRoutes);
 
 // ── 404 Handler ──
 app.use((_req, res) => {

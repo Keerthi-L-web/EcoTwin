@@ -1,14 +1,13 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useState } from 'react';
-
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: '📊' },
   { to: '/tracker', label: 'Tracker', icon: '📝' },
   { to: '/twin', label: 'Carbon Twin', icon: '👥' },
+  { to: '/goals', label: 'Goals', icon: '🎯' },
   { to: '/ai', label: 'AI Engine', icon: '🤖' },
   { to: '/coach', label: 'AI Coach', icon: '🧘' },
-  { to: '/forecast', label: 'Forecast', icon: '📈' },
   { to: '/challenges', label: 'Challenges', icon: '🏆' },
   { to: '/leaderboard', label: 'Leaderboard', icon: '🏅' },
   { to: '/reports', label: 'Reports', icon: '📄' },

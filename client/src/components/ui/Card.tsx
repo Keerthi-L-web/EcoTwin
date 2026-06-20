@@ -1,4 +1,4 @@
-import { type HTMLAttributes } from 'react';
+import { type HTMLAttributes, memo } from 'react';
 import { cn } from '../../lib/utils';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -6,7 +6,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   glow?: boolean;
 }
 
-export default function Card({ className, hover, glow, children, ...props }: CardProps) {
+const Card = memo(function Card({ className, hover, glow, children, ...props }: CardProps) {
   return (
     <div
       className={cn(

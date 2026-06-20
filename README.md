@@ -1,110 +1,102 @@
-# 🌱 EcoTwin AI
+# CarbonWise-AI
+> **Your Future Sustainable Self**
 
-> **Your Future Sustainable Self** — An AI-powered Carbon Footprint Awareness Platform
+CarbonWise-AI is a competition-grade, AI-powered sustainability platform designed to help individuals track, understand, and optimize their carbon footprint through personalized lifestyle coaching.
 
-[![CI/CD](https://github.com/YOUR_USERNAME/ecotwin-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/ecotwin-ai/actions)
+## Problem Statement
+Climate change requires systemic shifts, but individual actions account for nearly 70% of global greenhouse gas emissions. Most people lack the data, motivation, or actionable knowledge required to make sustainable lifestyle choices. 
 
-## Overview
+## Solution Overview
+CarbonWise-AI bridges this gap by creating a "digital twin" of a user's carbon footprint. It analyzes daily habits—from transportation to diet—and uses advanced AI (Google Gemini) to forecast future emissions, generate personalized reduction strategies, and offer daily eco-coaching.
 
-EcoTwin AI is an intelligent platform that creates a **digital sustainability twin** and predicts the impact of lifestyle changes through AI-powered (Gemini) recommendations and simulations. It goes far beyond a simple carbon calculator — it's a living, predictive, gamified sustainability coach.
-
-## Features
-
-| Module | Description |
-|--------|------------|
-| 🔐 Authentication | JWT + Refresh Tokens + bcrypt |
-| 👤 Lifestyle Profiler | Transport, Food, Home, Shopping habits |
-| 📊 Carbon Tracker | Log & track daily/weekly/monthly emissions |
-| 👥 Future Carbon Twin | Compare current vs eco-friendly lifestyle |
-| 🤖 AI Scenario Engine | "What if" questions powered by Gemini AI |
-| 🧘 AI Sustainability Coach | Daily/weekly/monthly personalized plans |
-| 📈 Forecast Engine | Predict future emissions with trend analysis |
-| 🏆 Challenges | Eco challenges with progress tracking |
-| ⭐ Gamification | XP, Levels, Badges, Streaks, Leaderboard |
-| 📄 Reports | PDF report generation |
-| 🔔 Notifications | In-app alerts and reminders |
-| 📊 Dashboard | Unified view with Pie/Bar/Line charts |
-
-## Tech Stack
-
-- **Frontend**: React 18 + TypeScript + Vite + Tailwind CSS v4 + React Query + Recharts
-- **Backend**: Node.js + Express 5 + TypeScript
-- **Database**: Supabase PostgreSQL
-- **AI**: Google Gemini API
-- **Auth**: JWT + bcrypt + Refresh Tokens
-- **Testing**: Vitest + React Testing Library + Supertest
-- **Deploy**: Vercel (frontend) + Render (backend)
+---
 
 ## Architecture
+The application uses a modern, serverless-ready architecture combining a robust Node.js/Express backend with a highly interactive React/Vite frontend.
 
-- Feature-based architecture with Clean Architecture principles
-- SOLID principles throughout
-- Strict TypeScript (`strict: true`)
-- Zod validation on all endpoints
-- OWASP security best practices
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS v4, React Query, Lucide React
+- **Backend**: Node.js, Express.js, TypeScript, Zod Validation
+- **Database**: Supabase (PostgreSQL)
+- **AI Engine**: Google Gemini API
 
-## Getting Started
+## Key Features
+- **Carbon Tracking**: Log daily activities (travel, diet, energy).
+- **Twin Simulation**: AI forecasts how lifestyle changes (e.g., going vegan) impact long-term emissions.
+- **Goals Module**: Set actionable targets with deadlines and track completion.
+- **AI Coach**: Graceful, robust daily eco-tips and weekly sustainability action plans.
+- **Gamification**: Earn XP, level up, and compete on the global leaderboard.
 
-### Prerequisites
+---
 
-- Node.js 20+
-- Supabase account
-- Gemini API key
+## Engineering Standards
 
-### Setup
+### Security Features
+- Strict JWT authentication with HttpOnly cookies/local storage.
+- Request rate-limiting and robust CORS policies.
+- Comprehensive `Zod` schema validation on all incoming API requests.
+- Mutex-locked token refresh mechanism to prevent race conditions during `401 Unauthorized` responses.
 
-```bash
-# Clone
-git clone https://github.com/YOUR_USERNAME/ecotwin-ai.git
-cd ecotwin-ai
+### Performance
+- Heavy React components (Cards, Buttons, Charts) are optimized using `React.memo` and `useCallback`.
+- Lazy-loaded routing ensures a minimal initial bundle size.
 
-# Install dependencies
-cd server && npm install && cd ..
-cd client && npm install && cd ..
+### Testing Strategy
+- Core carbon calculation utilities are fully unit-tested via `Vitest`.
+- Zod schemas are rigorously validated against edge cases.
 
-# Configure environment
-cp .env.example server/.env
-cp .env.example client/.env
-# Edit both .env files with your credentials
+### Accessibility (a11y)
+- Strict ARIA label compliance across interactive elements.
+- Keyboard navigation support and focus management.
+- High-contrast UI theme designed for readability.
 
-# Run database migration
-# Paste supabase/migrations/001_initial_schema.sql into Supabase SQL Editor
+---
 
-# Start development
-cd server && npm run dev &
-cd client && npm run dev
+## Setup Instructions
+
+### Environment Variables
+Create a `.env` file in the `server` directory:
+```env
+PORT=5000
+NODE_ENV=development
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_key
+JWT_SECRET=your_jwt_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+GEMINI_API_KEY=your_gemini_key
+CORS_ORIGIN=http://localhost:5173
 ```
 
-### Testing
-
-```bash
-cd server && npm test
-cd client && npm test
+Create a `.env` file in the `client` directory:
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
 
-## Security
+### Installation
+```bash
+# Terminal 1: Backend
+cd server
+npm install
+npm run dev
 
-- ✅ JWT with 15-minute expiry + 7-day refresh rotation
-- ✅ bcrypt (12 rounds)
-- ✅ Helmet security headers
-- ✅ Rate limiting (general, auth, AI)
-- ✅ CORS origin whitelist
-- ✅ Zod input validation
-- ✅ XSS sanitization
-- ✅ SQL injection protection (parameterized queries)
-- ✅ Environment validation at startup
+# Terminal 2: Frontend
+cd client
+npm install
+npm run dev
+```
 
-## Accessibility
+---
 
-- ✅ WCAG 2.1 AA compliant
-- ✅ Semantic HTML with proper landmarks
-- ✅ Keyboard navigation + focus indicators
-- ✅ ARIA labels on all interactive elements
-- ✅ Screen reader support
-- ✅ Color contrast (4.5:1 minimum)
-- ✅ Reduced motion support
-- ✅ Skip-to-content link
+## API Documentation
+Core endpoints include:
+- `POST /api/auth/login`: Authenticate and receive JWT.
+- `GET /api/profile`: Retrieve lifestyle profile and twin data.
+- `POST /api/goals`: Create a new sustainability goal.
+- `POST /api/ai/scenario`: Run a Gemini-powered impact simulation.
 
-## License
+## Future Improvements
+- Native iOS/Android apps built with React Native.
+- Direct integration with smart home APIs (e.g., Google Nest) for real-time electricity tracking.
+- Social sharing and team-based sustainability challenges.
 
-MIT
+*Designed & engineered for maximum impact.*
