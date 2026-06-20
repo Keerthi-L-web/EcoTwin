@@ -35,7 +35,7 @@ export class TrackerController {
 
   async delete(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-      await trackerService.deleteActivity(req.params.id!, req.userId!);
+      await trackerService.deleteActivity(req.params.id as string, req.userId!);
       res.json({ message: 'Activity deleted' });
     } catch (error) {
       next(error);

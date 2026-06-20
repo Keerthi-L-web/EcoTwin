@@ -16,7 +16,7 @@ export class ChallengesController {
 
   async join(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-      const userChallenge = await challengesService.joinChallenge(req.userId!, req.params.id!);
+      const userChallenge = await challengesService.joinChallenge(req.userId!, req.params.id as string);
       res.status(201).json({ userChallenge });
     } catch (error) {
       next(error);
@@ -26,7 +26,7 @@ export class ChallengesController {
   async updateProgress(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const { progress } = req.body as { progress: number };
-      const userChallenge = await challengesService.updateProgress(req.userId!, req.params.id!, progress);
+      const userChallenge = await challengesService.updateProgress(req.userId!, req.params.id as string, progress);
       res.json({ userChallenge });
     } catch (error) {
       next(error);

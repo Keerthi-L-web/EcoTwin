@@ -1,6 +1,6 @@
 import { TwinRepository, TwinSimulation } from './twin.repository';
 import { SimulateInput } from './twin.schema';
-import { calculateDailyFromProfile, EMISSION_FACTORS } from '../../shared/carbon';
+import { calculateDailyFromProfile } from '../../shared/carbon';
 import { NotFoundError } from '../../shared/errors';
 
 export class TwinService {
