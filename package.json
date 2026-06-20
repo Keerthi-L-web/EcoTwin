@@ -1,0 +1,16 @@
+{
+  "name": "ecotwin-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EcoTwin AI - Your Future Sustainable Self",
+  "scripts": {
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "test:client": "cd client && npm test",
+    "test:server": "cd server && npm test",
+    "test": "npm run test:server && npm run test:client",
+    "lint": "cd client && npm run lint && cd ../server && npm run lint"
+  }
+}
