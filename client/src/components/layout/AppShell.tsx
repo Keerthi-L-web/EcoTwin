@@ -36,7 +36,7 @@ export default function AppShell() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-surface-950 border-r border-surface-700/50 flex flex-col transform transition-transform duration-200 ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-56 bg-surface-950 border-r border-surface-700/50 flex flex-col transform transition-transform duration-200 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
         role="navigation"

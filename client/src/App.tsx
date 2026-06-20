@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import { Suspense, lazy, type ReactNode } from 'react';
 
 // Layout
@@ -63,9 +64,10 @@ function PublicRoute({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
+      <ToastProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
             {/* Public routes */}
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
@@ -96,9 +98,10 @@ export default function App() {
 
             {/* Catch all */}
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </ToastProvider>
     </QueryClientProvider>
   );
 }

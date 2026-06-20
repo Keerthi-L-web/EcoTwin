@@ -10,7 +10,6 @@ export default function CoachPage() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['coach', planType],
     queryFn: () => api.get(`/ai/coach/${planType}`).then((r) => r.data),
-    enabled: false,
   });
 
   return (
@@ -52,15 +51,68 @@ export default function CoachPage() {
         </div>
       )}
 
-      {(planType === 'weekly' || planType === 'monthly') && data?.plan && (
-        <Card className="animate-slide-up">
-          <CardHeader><CardTitle>{planType === 'weekly' ? '7-Day' : '4-Week'} Plan</CardTitle></CardHeader>
-          <CardContent>
-            <pre className="text-sm text-surface-200 whitespace-pre-wrap bg-surface-900 rounded-xl p-4 overflow-auto max-h-96">
-              {JSON.stringify(data.plan, null, 2)}
-            </pre>
-          </CardContent>
-        </Card>
+      {planType === 'weekly' && data?.plan && (
+        <div className="space-y-4 animate-slide-up">
+          <Card>
+            <CardHeader><CardTitle>Your 7-Day Action Plan</CardTitle></CardHeader>
+            <CardContent>
+              <p className="text-surface-200 mb-4">Potential Savings: <span className="text-eco-400 font-bold">{data.plan.total_potential_savings_kg} kg CO₂</span></p>
+              <div className="space-y-3">
+                {data.plan.days?.map((day: any, i: number) => (
+                  <div key={i} className="flex flex-col md:flex-row gap-4 p-4 rounded-xl bg-surface-800 border border-surface-700">
+                    <div className="font-bold text-eco-400 min-w-[100px]">{day.day}</div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-surface-50">{day.action}</p>
+                      <p className="text-sm text-surface-200/70 mt-1">{day.tip}</p>
+                    </div>
+                    <div className="text-sm text-accent-amber font-semibold whitespace-nowrap">
+                      ↓ {day.impact_kg} kg
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {planType === 'monthly' && data?.plan && (
+        <div className="space-y-4 animate-slide-up">
+          <Card>
+            <CardHeader><CardTitle>4-Week Progressive Plan</CardTitle></CardHeader>
+            <CardContent>
+              <div className="flex gap-6 mb-6">
+                <div>
+                  <p className="text-sm text-surface-200/70">Total Savings</p>
+                  <p className="text-2xl font-bold text-eco-400">{data.plan.total_co2_savings_kg} kg CO₂</p>
+                </div>
+                <div>
+                  <p className="text-sm text-surface-200/70">Money Saved</p>
+                  <p className="text-2xl font-bold text-accent-amber">${data.plan.total_money_saved}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {data.plan.weeks?.map((week: any, i: number) => (
+                  <Card key={i} className="bg-surface-800 border-surface-700">
+                    <CardHeader><CardTitle className="text-base text-eco-300">Week {week.week}: {week.theme}</CardTitle></CardHeader>
+                    <CardContent>
+                      <ul className="space-y-2 mb-3">
+                        {week.goals?.map((goal: string, j: number) => (
+                          <li key={j} className="flex gap-2 text-sm text-surface-200">
+                            <span className="text-eco-400">✓</span> {goal}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="text-sm text-surface-200/60 font-semibold border-t border-surface-700 pt-2 mt-2">
+                        Expected: ↓ {week.expected_reduction_kg} kg
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {!data && !isLoading && (

@@ -5,9 +5,11 @@ import Card, { CardHeader, CardTitle, CardContent } from '../../../components/ui
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
 import Input from '../../../components/ui/Input';
+import { useToast } from '../../../contexts/ToastContext';
 
 export default function ProfilePage() {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const { data } = useQuery({
     queryKey: ['profile'],
@@ -46,7 +48,11 @@ export default function ProfilePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       queryClient.invalidateQueries({ queryKey: ['twinComparison'] });
+      toast('Profile saved successfully!', 'success');
     },
+    onError: () => {
+      toast('Failed to save profile.', 'error');
+    }
   });
 
   const handleSubmit = (e: FormEvent) => {

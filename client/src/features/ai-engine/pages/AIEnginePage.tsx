@@ -4,12 +4,16 @@ import api from '../../../lib/api';
 import Card, { CardHeader, CardTitle, CardContent } from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
+import { useToast } from '../../../contexts/ToastContext';
 
 export default function AIEnginePage() {
   const [question, setQuestion] = useState('');
+  const { toast } = useToast();
 
   const scenarioMutation = useMutation({
     mutationFn: (q: string) => api.post('/ai/scenario', { question: q }).then((r) => r.data),
+    onSuccess: () => toast('Scenario analyzed successfully!', 'success'),
+    onError: () => toast('Failed to analyze scenario. Please try again.', 'error'),
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -121,6 +125,15 @@ export default function AIEnginePage() {
             </CardContent>
           </Card>
         </div>
+      )}
+
+      {!result && !scenarioMutation.isPending && (
+        <Card className="border-dashed border-2 border-surface-700/50 bg-surface-800/30">
+          <CardContent className="text-center py-12">
+            <span className="text-4xl block mb-4" aria-hidden="true">🤖</span>
+            <p className="text-surface-200">Type a scenario above or select a suggestion to see the AI analysis.</p>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

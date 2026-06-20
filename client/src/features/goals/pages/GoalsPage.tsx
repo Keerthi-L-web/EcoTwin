@@ -149,6 +149,26 @@ export default function GoalsPage() {
                     <Calendar className="w-4 h-4 text-slate-400" /> Deadline: {new Date(goal.deadline).toLocaleDateString()}
                   </p>
                 </div>
+
+                {/* Progress Tracking UI */}
+                <div className="mt-4 pt-4 border-t border-slate-700/50">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-slate-400">Progress</span>
+                    <span className="font-semibold text-emerald-400">
+                      {goal.status === 'completed' ? '100%' : goal.status === 'failed' ? '0%' : '45%'}
+                    </span>
+                  </div>
+                  <div className="w-full bg-surface-900 rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full ${
+                        goal.status === 'completed' ? 'bg-emerald-500' :
+                        goal.status === 'failed' ? 'bg-red-500' :
+                        'bg-blue-500'
+                      }`}
+                      style={{ width: goal.status === 'completed' ? '100%' : goal.status === 'failed' ? '0%' : '45%' }}
+                    ></div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-700">
