@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { Button } from './Button';
-import { Input } from './Input';
-import { Card, CardTitle } from './Card';
+import Button from './Button';
+import Input from './Input';
+import Card, { CardTitle } from './Card';
 
 describe('Button Component', () => {
   it('renders with text', () => {
