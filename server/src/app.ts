@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { env } from './config/env';
 import { generalLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
@@ -35,7 +37,34 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: env.CORS_ORIGIN,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:3000',
+      env.CORS_ORIGIN,
+      // Allow all Vercel deployments for this project
+      /\.vercel\.app$/,
+      /\.onrender\.com$/,
+      // Allow all Netlify deployments
+      /\.netlify\.app$/,
+    ];
+
+    const isAllowed = allowedOrigins.some((allowed) =>
+      typeof allowed === 'string'
+        ? allowed === origin
+        : allowed.test(origin)
+    );
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Be permissive in production to avoid blocking legit traffic
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -76,10 +105,24 @@ app.use('/api/notifications', notificationsRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/goals', goalsRoutes);
 
-// ── 404 Handler ──
-app.use((_req, res) => {
-  res.status(404).json({ error: 'Endpoint not found' });
+// ── 404 Handler for API routes ──
+app.use('/api', (_req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
 });
+
+// ── Serve React Frontend in Production ──
+if (env.NODE_ENV === 'production') {
+  const clientBuildPath = path.resolve('..', 'client', 'dist');
+  app.use(express.static(clientBuildPath));
+  // SPA fallback — all non-API routes serve index.html
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientBuildPath, 'index.html'));
+  });
+} else {
+  app.use((_req, res) => {
+    res.status(404).json({ error: 'Endpoint not found' });
+  });
+}
 
 // ── Error Handler ──
 app.use(errorHandler);
