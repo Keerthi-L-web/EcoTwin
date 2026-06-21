@@ -10,6 +10,8 @@ import AppShell from './components/layout/AppShell';
 // Auth pages (eager loaded)
 import LoginPage from './features/auth/pages/LoginPage';
 import SignupPage from './features/auth/pages/SignupPage';
+import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
 
 // Lazy-loaded feature pages
 const DashboardPage = lazy(() => import('./features/dashboard/pages/DashboardPage'));
@@ -71,6 +73,8 @@ export default function App() {
             {/* Public routes */}
             <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
             <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
 
             {/* Protected routes */}
             <Route

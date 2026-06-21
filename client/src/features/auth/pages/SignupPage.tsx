@@ -35,8 +35,15 @@ export default function SignupPage() {
       await signup(email, password, name);
       navigate('/profile');
     } catch (err: unknown) {
-      const axiosErr = err as { response?: { data?: { error?: string } } };
-      setError(axiosErr.response?.data?.error || 'Signup failed');
+      const axiosErr = err as { response?: { data?: { error?: string; message?: string } } };
+      const msg = axiosErr.response?.data?.error || axiosErr.response?.data?.message;
+      if (msg?.toLowerCase().includes('already')) {
+        setError('This email is already registered. Please sign in instead.');
+      } else if (msg?.toLowerCase().includes('invalid')) {
+        setError('Invalid email or password format. Please check your input.');
+      } else {
+        setError(msg || 'Signup failed. Please check your connection and try again.');
+      }
     } finally {
       setLoading(false);
     }

@@ -66,4 +66,36 @@ export class AuthRepository {
       .from('lifestyle_profiles')
       .insert({ user_id: userId });
   }
+
+  async setResetToken(userId: string, token: string, expires: Date): Promise<void> {
+    const { error } = await supabase
+      .from('users')
+      .update({ reset_token: token, reset_token_expires: expires.toISOString() })
+      .eq('id', userId);
+    if (error) throw new Error(`Failed to set reset token: ${error.message}`);
+  }
+
+  async findByResetToken(token: string): Promise<UserWithPassword | null> {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('reset_token', token)
+      .gt('reset_token_expires', new Date().toISOString())
+      .single();
+    if (error || !data) return null;
+    return data as UserWithPassword;
+  }
+
+  async updatePassword(userId: string, passwordHash: string): Promise<void> {
+    const { error } = await supabase
+      .from('users')
+      .update({
+        password_hash: passwordHash,
+        reset_token: null,
+        reset_token_expires: null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', userId);
+    if (error) throw new Error(`Failed to update password: ${error.message}`);
+  }
 }

@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { env } from '../../config/env';
 import { AuthRepository } from './auth.repository';
 import { AuthResponse, AuthTokens, User } from './auth.types';
@@ -102,5 +103,31 @@ export class AuthService {
       throw new UnauthorizedError('User not found');
     }
     return user;
+  }
+
+  async forgotPassword(email: string): Promise<{ resetToken: string }> {
+    const user = await this.repository.findByEmail(email);
+    // Always return the same response to prevent email enumeration attacks,
+    // but only generate a token if user exists.
+    if (!user) {
+      // Return a dummy token to not reveal if email is registered
+      return { resetToken: 'USER_NOT_FOUND' };
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+    await this.repository.setResetToken(user.id, token, expires);
+
+    return { resetToken: token };
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const user = await this.repository.findByResetToken(token);
+    if (!user) {
+      throw new UnauthorizedError('Invalid or expired reset token. Please request a new one.');
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+    await this.repository.updatePassword(user.id, passwordHash);
   }
 }

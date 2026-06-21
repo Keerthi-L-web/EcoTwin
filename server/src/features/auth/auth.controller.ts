@@ -52,4 +52,36 @@ export class AuthController {
       next(error);
     }
   }
+
+  async forgotPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email } = req.body as { email: string };
+      const { resetToken } = await authService.forgotPassword(email);
+
+      // In production, you would email the link. For demo, we return it directly.
+      if (resetToken === 'USER_NOT_FOUND') {
+        // Don't reveal if user exists
+        res.json({ message: 'If that email is registered, a reset link will appear here.', resetLink: null });
+        return;
+      }
+
+      const resetLink = `${process.env.CLIENT_URL || 'http://localhost:5174'}/reset-password?token=${resetToken}`;
+      res.json({
+        message: 'Password reset link generated. Copy the link below to reset your password.',
+        resetLink,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async resetPassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { token, password } = req.body as { token: string; password: string };
+      await authService.resetPassword(token, password);
+      res.json({ message: 'Password reset successfully. You can now log in with your new password.' });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
