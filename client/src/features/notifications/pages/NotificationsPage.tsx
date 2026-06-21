@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../../lib/api';
-import Card, { CardHeader, CardTitle, CardContent } from '../../../components/ui/Card';
+import Card, { CardContent } from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 
 export default function NotificationsPage() {

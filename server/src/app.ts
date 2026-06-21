@@ -78,9 +78,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(sanitize);
 
 // ── Health Checks ──
-app.get('/', (_req, res) => {
-  res.status(200).json({ status: 'ok', message: 'EcoTwin AI Backend is running!' });
-});
 app.get('/api/v1/health', (_req, res) => {
   res.status(200).json({ status: 'ok' });
 });

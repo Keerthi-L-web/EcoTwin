@@ -1,9 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
-import Card, { CardTitle } from '../components/ui/Card';
+import { Button } from './Button';
+import { Input } from './Input';
+import { Card, CardTitle } from './Card';
 
 describe('Button Component', () => {
   it('renders with text', () => {
